@@ -34,11 +34,12 @@ const EditPage = ({
     hs_billing_start_delay_months: "",
     hs_billing_start_delay_type: "",
   });
-  const [isValid, setIsValid] = useState(true);
+  const [dataFetching, setDataFetching] = useState<boolean>(true);
   const [loading, setLoading] = useState(false);
 
   const getListItems = async () => {
     try {
+      setDataFetching(true);
       const accessToken = await getAccessTokenWithPortalId(Number(portalId));
       const list = await getLineItemList(accessToken!, Number(dealId));
       const data = await getLineItemRecords(list!, accessToken!);
@@ -66,8 +67,11 @@ const EditPage = ({
         hs_billing_start_delay_months: response.hs_billing_start_delay_months,
         hs_billing_start_delay_type: response.hs_billing_start_delay_type,
       });
+      setDataFetching(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setDataFetching(false);
     }
   };
 
@@ -100,7 +104,11 @@ const EditPage = ({
     }
   };
 
-  return (
+  return dataFetching ? (
+    <div className="flex justify-center items-center h-screen">
+      <div className="loader" />
+    </div>
+  ) : (
     <div className="max-w-7xl mx-auto space-y-5 p-10">
       <LineItemForm
         // action="Edit"
