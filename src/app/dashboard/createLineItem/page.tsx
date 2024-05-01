@@ -89,7 +89,9 @@ const CreateLineItem = ({
       }
       toast.success("Line Item created successfully");
       setLoading(false);
-      router.push(`/dashboard?portalId=${portalId}&userId=${userId}`);
+      router.push(
+        `/dashboard?portalId=${portalId}&userId=${userId}&dealId=${dealId}`
+      );
     } catch (error) {
       console.log(error);
     } finally {

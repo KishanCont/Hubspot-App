@@ -30,11 +30,9 @@ const DashboardPage = async ({
     throw new Error("Portal Id, User Id and Deal Id are required");
   }
 
-  console.log("PORTAL ID", portalId)
   // Fetching Collections and Access Token
   const getCollections = await getCollectionList(`Account_${portalId}`);
   const accessToken = await getAccessTokenWithPortalId(Number(portalId));
-  console.log("Access Token", accessToken);
 
   if (!accessToken) {
     throw new Error("Access Token Not Generated");
