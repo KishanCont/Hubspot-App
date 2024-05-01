@@ -218,9 +218,6 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
                 />
               </TableCell>
               <TableCell className="flex gap-4">
-                <Button variant={"outline"}>
-                  <Edit className="w-4 h-4 text-primary" />
-                </Button>
                 <Button
                   variant={"default"}
                   onClick={() => handleDeleteRow(index)}

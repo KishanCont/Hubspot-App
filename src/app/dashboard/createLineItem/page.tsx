@@ -57,7 +57,6 @@ const CreateLineItem = ({
 
   useEffect(() => {
     getProductDataTable();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -73,7 +72,6 @@ const CreateLineItem = ({
         setDiscount(newData[0].discount);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputData, setInputData]);
 
   const handleSubmit = async () => {
@@ -87,7 +85,6 @@ const CreateLineItem = ({
         }
       );
 
-      console.log(inputData);
       if (!response.data) {
         throw new Error("Line Item not Created");
       }
@@ -115,7 +112,6 @@ const CreateLineItem = ({
         <LineItemForm
           inputData={inputData}
           setInputData={setInputData}
-          // action="Create"
           discount={discount}
         />
         <Button onClick={handleSubmit} disabled={loading}>
