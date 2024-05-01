@@ -39,6 +39,7 @@ const CreateLineItem = ({
     hs_billing_start_delay_months: "",
     hs_billing_start_delay_type: "",
   });
+  const [discount, setDiscount] = useState<string>("");
 
   const [loading, setLoading] = useState(false);
   const [filteredData, setFilteredData] = useState<CollectionDataType[]>([]);
@@ -68,6 +69,9 @@ const CreateLineItem = ({
             item.billing_frequency == inputData.recurringbillingfrequency)
       );
       setFilteredData(newData);
+      if (newData.length === 1) {
+        setDiscount(newData[0].discount);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputData, setInputData]);
@@ -112,6 +116,7 @@ const CreateLineItem = ({
           inputData={inputData}
           setInputData={setInputData}
           // action="Create"
+          discount={discount}
         />
         <Button onClick={handleSubmit} disabled={loading}>
           Submit

@@ -26,7 +26,7 @@ interface DashboardPageProps {
 const DashboardPage = async ({
   searchParams: { dealId, portalId, userId },
 }: DashboardPageProps) => {
-  if (!dealId || !portalId || !userId) {
+  if (!portalId || !userId) {
     throw new Error("Portal Id, User Id and Deal Id are required");
   }
 

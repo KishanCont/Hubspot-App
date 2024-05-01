@@ -17,10 +17,11 @@ import { Label } from "@/components/ui/label";
 interface Props {
   inputData: LineItem;
   setInputData: Dispatch<SetStateAction<LineItem>>;
+  discount?: string;
   // action: "Create" | "Edit";
 }
 
-const LineItemForm = ({ inputData, setInputData }: Props) => {
+const LineItemForm = ({ inputData, setInputData, discount }: Props) => {
   const [isValid, setIsValid] = useState(true);
   return (
     <div className="grid grid-cols-3 gap-5 w-full">
@@ -104,19 +105,21 @@ const LineItemForm = ({ inputData, setInputData }: Props) => {
         </Select>
       </div>
       <div className="flex flex-col gap-2">
-        <Label htmlFor="discount">Discount</Label>
+        <Label htmlFor="discount">
+          {discount ? "Discount" : "Custom Discount"}
+        </Label>
         <Input
           type="text"
-          placeholder="Discount"
+          placeholder={discount ? "Discount" : "Custom Discount"}
           id="discount"
           required
           onChange={(e) =>
             setInputData({
               ...inputData,
-              hs_discount_percentage: e.target.value,
+              hs_discount_percentage: discount ? discount : e.target.value,
             })
           }
-          value={inputData.hs_discount_percentage}
+          value={discount ? discount : inputData.hs_discount_percentage}
         />
       </div>
     </div>
