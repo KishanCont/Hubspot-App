@@ -11,6 +11,7 @@ export const PATCH = async (req: NextRequest) => {
     const validatedBody = editLineItemSchema.safeParse(body);
 
     if (!validatedBody.success) {
+      console.log(validatedBody.error);
       return Response.json({ message: "All fields are required" });
     }
 
@@ -21,7 +22,7 @@ export const PATCH = async (req: NextRequest) => {
       { properties: validatedBody.data },
       Number(lineItemId)!
     );
-    // console.log(response);
+    console.log(response);
     return Response.json({ message: response });
   } catch (error: any) {
     return Response.json({ message: error.message });

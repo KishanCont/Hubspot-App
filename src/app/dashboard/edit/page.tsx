@@ -89,6 +89,7 @@ const EditPage = ({
       if (!response.data) {
         throw new Error("Something went wrong");
       }
+      console.log(inputData);
       toast.success("Line Item updated successfully");
       window.location.reload();
       setLoading(false);
