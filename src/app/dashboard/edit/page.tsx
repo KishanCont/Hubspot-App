@@ -46,27 +46,31 @@ const EditPage = ({
 
       const response = data!.filter((item) => item.id == lineItemId)[0]
         .properties;
-      console.log(response);
 
       if (!response) {
         throw new Error("List Item not found");
       }
+      console.log(response);
 
       setInputData({
         ...inputData,
         name: response.name,
         quantity: response.quantity,
-        hs_recurring_billing_period: removeFirstAndLastLetter(
-          response.hs_recurring_billing_period
-        ),
-        hs_discount_percentage: response.hs_discount_percentage,
+        hs_recurring_billing_period: response.hs_recurring_billing_period
+          ? removeFirstAndLastLetter(response.hs_recurring_billing_period)
+          : "0",
+        hs_discount_percentage: response.hs_discount_percentage
+          ? response.hs_discount_percentage
+          : "0",
         hs_recurring_billing_start_date:
           response.hs_recurring_billing_start_date,
-        recurringbillingfrequency: response.recurringbillingfrequency,
+        recurringbillingfrequency:
+          response.recurringbillingfrequency || "one-time",
         hs_billing_start_delay_days: response.hs_billing_start_delay_days,
         hs_billing_start_delay_months: response.hs_billing_start_delay_months,
         hs_billing_start_delay_type: response.hs_billing_start_delay_type,
       });
+
       setDataFetching(false);
     } catch (error) {
       console.log(error);
@@ -87,7 +91,18 @@ const EditPage = ({
         `/api/crm-card/edit?portalId=${portalId}&lineItemId=${lineItemId}`,
         {
           ...inputData,
-          hs_recurring_billing_period: `P${inputData.hs_recurring_billing_period}M`,
+          hs_recurring_billing_period:
+            inputData.recurringbillingfrequency === "one-time"
+              ? ""
+              : `P${inputData.hs_recurring_billing_period}M`,
+          hs_recurring_billing_start_date:
+            inputData.hs_billing_start_delay_days === "At Payment"
+              ? null
+              : inputData.hs_recurring_billing_start_date,
+          recurringbillingfrequency:
+            inputData.recurringbillingfrequency === "one-time"
+              ? ""
+              : inputData.recurringbillingfrequency,
         }
       );
       if (!response.data) {

@@ -97,7 +97,11 @@ const BillingStartDate = ({ inputData, setInputData }: Props) => {
           ) : inputData.hs_billing_start_delay_months ? (
             <p>{`${inputData.hs_billing_start_delay_months} months after payment`}</p>
           ) : (
-            <p>{inputData.hs_recurring_billing_start_date}</p>
+            <p>
+              {inputData.hs_recurring_billing_start_date === null
+                ? "At Payment"
+                : inputData.hs_recurring_billing_start_date}
+            </p>
           )}
         </Button>
         <Select
@@ -120,7 +124,7 @@ const BillingStartDate = ({ inputData, setInputData }: Props) => {
                   <DialogContent>
                     <Input
                       type={item.type}
-                      value={inputData[item.value]}
+                      value={inputData[item.value]!}
                       onChange={(e) => onChange(e, item.value)}
                     />
                     <Button

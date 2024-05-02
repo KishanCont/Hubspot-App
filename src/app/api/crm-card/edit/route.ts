@@ -9,11 +9,11 @@ export const PATCH = async (req: NextRequest) => {
     const lineItemId = req.nextUrl.searchParams.get("lineItemId");
     const body = await req.json();
     const validatedBody = editLineItemSchema.safeParse(body);
-
     if (!validatedBody.success) {
       console.log(validatedBody.error);
       return Response.json({ message: "All fields are required" });
     }
+    console.log(validatedBody);
 
     const accessToken = await getAccessTokenWithPortalId(Number(portalId));
 
@@ -22,7 +22,6 @@ export const PATCH = async (req: NextRequest) => {
       { properties: validatedBody.data },
       Number(lineItemId)!
     );
-    console.log(response);
     return Response.json({ message: response });
   } catch (error: any) {
     return Response.json({ message: error.message });

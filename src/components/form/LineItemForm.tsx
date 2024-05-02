@@ -64,14 +64,14 @@ const LineItemForm = ({ inputData, setInputData, discount }: Props) => {
           onChange={(e) => {
             const newData = { ...inputData };
             const result = validateTerm(
-              newData.recurringbillingfrequency,
+              newData.recurringbillingfrequency!,
               parseInt(e.target.value)
             );
             setIsValid(result);
             newData.hs_recurring_billing_period = e.target.value;
             setInputData(newData);
           }}
-          value={inputData.hs_recurring_billing_period}
+          value={inputData.hs_recurring_billing_period!}
           className={cn(isValid ? "border-input" : "border-red-500")}
         />
       </div>
@@ -79,12 +79,12 @@ const LineItemForm = ({ inputData, setInputData, discount }: Props) => {
       <div className="flex flex-col gap-2">
         <Label htmlFor="billingFrequency">Billing Frequency</Label>
         <Select
-          value={inputData.recurringbillingfrequency}
+          value={inputData.recurringbillingfrequency!}
           onValueChange={(e) => {
             const newData = { ...inputData };
             const result = validateTerm(
               e,
-              parseInt(newData.hs_recurring_billing_period)
+              parseInt(newData.hs_recurring_billing_period!)
             );
             setIsValid(result);
             newData.recurringbillingfrequency = e;
@@ -119,7 +119,7 @@ const LineItemForm = ({ inputData, setInputData, discount }: Props) => {
               hs_discount_percentage: discount ? discount : e.target.value,
             })
           }
-          value={discount ? discount : inputData.hs_discount_percentage}
+          value={discount ? discount : inputData.hs_discount_percentage!}
         />
       </div>
     </div>
