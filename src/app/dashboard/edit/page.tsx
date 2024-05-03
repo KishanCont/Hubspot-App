@@ -127,6 +127,9 @@ const EditPage = ({
   const onSubmit = async () => {
     try {
       setLoading(true);
+      if (discount) {
+        inputData.hs_discount_percentage = discount;
+      }
       const response = await axios.patch(
         `/api/crm-card/edit?portalId=${portalId}&lineItemId=${lineItemId}`,
         {

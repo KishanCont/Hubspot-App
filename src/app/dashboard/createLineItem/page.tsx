@@ -79,6 +79,9 @@ const CreateLineItem = ({
   const handleSubmit = async () => {
     try {
       setLoading(true);
+      if (discount) {
+        inputData.hs_discount_percentage = discount;
+      }
       const response = await axios.post(
         `/api/crm-card/createLineItem?portalId=${portalId}&dealId=${dealId}`,
         {
