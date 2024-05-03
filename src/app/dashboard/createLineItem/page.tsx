@@ -70,6 +70,8 @@ const CreateLineItem = ({
       setFilteredData(newData);
       if (newData.length === 1) {
         setDiscount(newData[0].discount);
+      } else {
+        setDiscount("");
       }
     }
   }, [inputData, setInputData]);
