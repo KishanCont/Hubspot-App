@@ -1,11 +1,14 @@
 "use client";
 
 import { getAccessTokenWithPortalId } from "@/actions/authToken";
+import { getCollectionData } from "@/actions/collections";
 import { getLineItemList, getLineItemRecords } from "@/actions/lineItems";
+import ReadOnlyTable from "@/components/ReadOnlyTable";
 import LineItemForm from "@/components/form/LineItemForm";
 import { Button } from "@/components/ui/button";
 import { removeFirstAndLastLetter } from "@/lib/utils";
 import { LineItem } from "@/lib/validation";
+import { CollectionDataType } from "@/types";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -19,9 +22,11 @@ const EditPage = ({
     portalId: string;
     name: string;
     dealId: string;
+    collection: string;
   };
 }) => {
-  const { lineItemId, hsProductId, portalId, name, dealId } = searchParams;
+  const { lineItemId, hsProductId, portalId, collection, dealId } =
+    searchParams;
   const [inputData, setInputData] = useState<LineItem>({
     name: "",
     quantity: "",
@@ -36,6 +41,11 @@ const EditPage = ({
   });
   const [dataFetching, setDataFetching] = useState<boolean>(true);
   const [loading, setLoading] = useState(false);
+  const [productDataTable, setProductDataTable] = useState<
+    CollectionDataType[]
+  >([]);
+  const [discount, setDiscount] = useState<string>("");
+  const [filteredData, setFilteredData] = useState<CollectionDataType[]>([]);
 
   const getListItems = async () => {
     try {
@@ -81,8 +91,36 @@ const EditPage = ({
 
   useEffect(() => {
     getListItems();
+    getProductDataTable();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const getProductDataTable = async () => {
+    const response: CollectionDataType[] | undefined = await getCollectionData(
+      `Account_${portalId}`,
+      collection
+    );
+    if (!response) {
+      throw new Error("Product Collection Not Found");
+    }
+    setProductDataTable(response);
+  };
+
+  useEffect(() => {
+    if (productDataTable.length > 0) {
+      const newData = productDataTable.filter(
+        (item) =>
+          item.quantity == inputData.quantity ||
+          (item.term == inputData.hs_recurring_billing_period &&
+            item.billing_frequency == inputData.recurringbillingfrequency)
+      );
+      setFilteredData(newData);
+      if (newData.length === 1) {
+        setDiscount(newData[0].discount);
+      }
+    }
+  }, [inputData, setInputData]);
 
   const onSubmit = async () => {
     try {
@@ -129,10 +167,12 @@ const EditPage = ({
         // action="Edit"
         inputData={inputData}
         setInputData={setInputData}
+        discount={discount}
       />
       <Button onClick={onSubmit} disabled={loading}>
         Submit
       </Button>
+      <ReadOnlyTable data={filteredData} />
     </div>
   );
 };

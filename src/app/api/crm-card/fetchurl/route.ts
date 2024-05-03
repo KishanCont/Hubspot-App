@@ -63,7 +63,11 @@ export const GET = async (req: NextRequest) => {
             type: "IFRAME",
             width: 890,
             height: 748,
-            uri: `${DOMAIN}/dashboard/edit?lineItemId=${item.id}&hsProductId=${item.properties.hs_product_id}&portalId=${portalId}&dealId=${dealId}`,
+            uri: `${DOMAIN}/dashboard/edit?lineItemId=${item.id}&hsProductId=${
+              item.properties.hs_product_id
+            }&portalId=${portalId}&dealId=${dealId}&collection=${generateSlug(
+              item.properties.name
+            )}_${item.properties.hs_product_id}`,
             label: "Edit",
           },
           {
