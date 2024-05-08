@@ -7,6 +7,7 @@ import {
   getProducts,
   saveRefreshTokenToMongo,
 } from "@/actions/install";
+import { createDeal } from "@/actions/user";
 import { generateSlug } from "@/lib/utils";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -49,6 +50,7 @@ export const GET = async (req: NextRequest) => {
 
       await saveRefreshTokenToMongo(refreshToken, portalId);
       await createDatabase(portalId);
+      await createDeal(portalId);
 
       return NextResponse.redirect(
         `${process.env.DOMAIN}/success?portalId=${portalId}`

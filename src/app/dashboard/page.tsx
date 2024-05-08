@@ -136,13 +136,6 @@ const DashboardPage = ({
             ))}
         </TableBody>
       </Table>
-      <Button
-        onClick={async () => {
-          const response = await createDeal(portalId);
-        }}
-      >
-        Create Deal
-      </Button>
     </div>
   );
 };
