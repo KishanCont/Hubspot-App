@@ -13,6 +13,7 @@ export const getUser = async (portalId: string, userId: string) => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
+  console.log(accessToken);
 
   return response.data;
 };
@@ -29,7 +30,7 @@ export const createDeal = async (portalId: string) => {
     },
   };
   const response = await axios.post(
-    `https://api.hubapi.com/crm/v3/properties/deals`,
+    `https://api.hubapi.com/crm/v3/objects/deals`,
     body,
     {
       headers: {
