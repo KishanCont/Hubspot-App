@@ -43,6 +43,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
   );
 
   const [loading, setLoading] = useState(false);
+  const [indexOfDuplicate, setIndexOfDuplicate] = useState(-1);
 
   const router = useRouter();
 
@@ -92,6 +93,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
 
   const handleSubmit = async () => {
     try {
+      console.log(collectionsData);
       setLoading(true);
       const isEmpty = collectionsData.some((item) => {
         return (
@@ -105,6 +107,24 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
 
       if (isEmpty) {
         toast.error("All fields are required");
+        return;
+      }
+
+      const isDuplicate = collectionsData.some((item, index) => {
+        const check =
+          collectionsData.findIndex(
+            (i) =>
+              i.hs_recurring_billing_start_date ===
+                item.hs_recurring_billing_start_date &&
+              i.term === item.term &&
+              i.billing_frequency === item.billing_frequency
+          ) !== index;
+        setIndexOfDuplicate(check ? index : -1);
+        return check;
+      });
+
+      if (isDuplicate) {
+        toast.error("Duplicate data found");
         return;
       }
 
@@ -153,80 +173,90 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {collectionsData?.map((collection, index) => (
-            <TableRow key={index}>
-              <TableCell>
-                <Input
-                  type="date"
-                  value={collection.hs_recurring_billing_start_date}
-                  onChange={(e) =>
-                    handleChange(e, index, "hs_recurring_billing_start_date")
-                  }
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  type="text"
-                  value={collection.term}
-                  onChange={(e) => handleChange(e, index, "term")}
-                  className={cn(
-                    isValid[index] ? "border-input" : "border-red-500"
-                  )}
-                />
-              </TableCell>
-              <TableCell>
-                <Select
-                  value={collection.billing_frequency}
-                  onValueChange={(e) => {
-                    const newCollectionsData = [...collectionsData];
-                    const result = validateTerm(
-                      e,
-                      parseInt(newCollectionsData[index].term)
-                    );
-                    const isNewValid = [...isValid];
-                    isNewValid[index] = result;
-                    setIsValid(isNewValid);
-                    newCollectionsData[index].billing_frequency = e;
+          {collectionsData?.map((collection, index) => {
+            const redClass = indexOfDuplicate === index ? "border-red-500" : "";
+            return (
+              <TableRow key={index}>
+                <TableCell>
+                  <Input
+                    type="date"
+                    value={collection.hs_recurring_billing_start_date}
+                    onChange={(e) =>
+                      handleChange(e, index, "hs_recurring_billing_start_date")
+                    }
+                    className={cn(redClass)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Input
+                    type="text"
+                    value={collection.term}
+                    onChange={(e) => handleChange(e, index, "term")}
+                    className={cn(
+                      isValid[index] ? "border-input" : "border-red-500",
+                      redClass
+                    )}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Select
+                    value={collection.billing_frequency}
+                    onValueChange={(e) => {
+                      const newCollectionsData = [...collectionsData];
+                      const result = validateTerm(
+                        e,
+                        parseInt(newCollectionsData[index].term)
+                      );
+                      const isNewValid = [...isValid];
+                      isNewValid[index] = result;
+                      setIsValid(isNewValid);
+                      newCollectionsData[index].billing_frequency = e;
 
-                    setCollectionsData(newCollectionsData);
-                  }}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Biling Frequency" />
-                  </SelectTrigger>
-                  <SelectContent className="h-44">
-                    {BillingFrequency.map((frequency) => (
-                      <SelectItem value={frequency.value} key={frequency.value}>
-                        {frequency.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </TableCell>
-              <TableCell>
-                <Input
-                  type="text"
-                  value={collection.quantity}
-                  onChange={(e) => handleChange(e, index, "quantity")}
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  type="text"
-                  value={collection.discount}
-                  onChange={(e) => handleChange(e, index, "discount")}
-                />
-              </TableCell>
-              <TableCell className="flex gap-4">
-                <Button
-                  variant={"default"}
-                  onClick={() => handleDeleteRow(index)}
-                >
-                  <Delete className="w-4 h-4 text-primary-foreground" />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+                      setCollectionsData(newCollectionsData);
+                    }}
+                  >
+                    <SelectTrigger className={cn("w-[180px]", redClass)}>
+                      <SelectValue placeholder="Biling Frequency" />
+                    </SelectTrigger>
+                    <SelectContent className="h-44">
+                      {BillingFrequency.map((frequency) => (
+                        <SelectItem
+                          value={frequency.value}
+                          key={frequency.value}
+                        >
+                          {frequency.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </TableCell>
+                <TableCell>
+                  <Input
+                    type="text"
+                    value={collection.quantity}
+                    onChange={(e) => handleChange(e, index, "quantity")}
+                    className={cn(redClass)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Input
+                    type="text"
+                    value={collection.discount}
+                    onChange={(e) => handleChange(e, index, "discount")}
+                    className={cn(redClass)}
+                  />
+                </TableCell>
+                <TableCell className="flex gap-4">
+                  <Button
+                    variant={"default"}
+                    onClick={() => handleDeleteRow(index)}
+                  >
+                    <Delete className="w-4 h-4 text-primary-foreground" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
 

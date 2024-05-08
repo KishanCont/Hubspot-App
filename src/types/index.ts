@@ -41,7 +41,7 @@ export interface LineItemsProperties extends WithId<Document> {
   name: string;
   quantity: string;
   hs_product_id: string;
-  hs_object_id: string
+  hs_object_id: string;
   recurringbillingfrequency: string;
   hs_recurring_billing_period: string;
   hs_discount_percentage: string;
@@ -58,6 +58,11 @@ export interface LineItemsObject {
 
 export interface LineItemsPropertiesResponse extends AxiosResponse {
   data: LineItemsProperties[];
+}
+
+export interface CollectionList {
+  name: string;
+  uuid: string;
 }
 
 export interface LineItemsResponse extends AxiosResponse {

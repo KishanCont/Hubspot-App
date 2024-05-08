@@ -1,3 +1,5 @@
+"use client";
+
 import { getAccessTokenWithPortalId } from "@/actions/authToken";
 import { getCollectionList } from "@/actions/collections";
 import DeleteCollection from "@/components/DeleteCollection";
@@ -11,9 +13,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { decodeSlug, generateSlug, removeId } from "@/lib/utils";
-import { UserData } from "@/types";
-import axios from "axios";
 import Link from "next/link";
+import { useState } from "react";
+
+import { CollectionList, UserData } from "@/types";
+import axios from "axios";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import { getUser } from "@/actions/user";
+import { Input } from "@/components/ui/input";
 
 interface DashboardPageProps {
   searchParams: {
@@ -23,36 +31,60 @@ interface DashboardPageProps {
   };
 }
 
-const DashboardPage = async ({
+const DashboardPage = ({
   searchParams: { dealId, portalId, userId },
 }: DashboardPageProps) => {
+  const [userData, setUserData] = useState<UserData>();
+  const [collectionList, setCollectionList] = useState<CollectionList[]>([]);
+  const [search, setSearch] = useState("");
   if (!portalId || !userId) {
     throw new Error("Portal Id, User Id and Deal Id are required");
   }
 
+  const getCollections = async () => {
+    const response = await getCollectionList(`Account_${portalId}`);
+    if (!response) {
+      toast.error("Collection Not Found");
+      return;
+    }
+    setCollectionList(response);
+  };
+
   // Fetching Collections and Access Token
-  const getCollections = await getCollectionList(`Account_${portalId}`);
-  const accessToken = await getAccessTokenWithPortalId(Number(portalId));
 
-  if (!accessToken) {
-    throw new Error("Access Token Not Generated");
-  }
+  const getUserData = async () => {
+    const response = await getUser(portalId, userId);
+    if (!response) {
+      toast.error("User Not Found");
+      return;
+    }
+    setUserData(response);
+  };
 
-  if (!getCollections) {
-    throw new Error("Collection List Not Found");
+  useEffect(() => {
+    getCollections();
+    getUserData();
+  }, []);
+
+  if (collectionList.length === 0 || !userData) {
+    return (
+      <div className="w-full min-h-screen grid place-content-center">
+        Loading...
+      </div>
+    );
   }
 
   // Fetching User Data
-  const getUserData: {
-    data: UserData;
-  } = await axios.get(`https://api.hubapi.com/settings/v3/users/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
 
   return (
     <div className="w-full min-h-screen grid place-content-center">
+      <Input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search Collection"
+        className=" p-2 mb-4 border border-gray-300 rounded"
+      />
       <Table className="w-fit m-auto  ">
         <TableHeader>
           <TableRow>
@@ -63,40 +95,46 @@ const DashboardPage = async ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {getCollections.map((collection) => (
-            <TableRow key={collection.uuid}>
-              <TableCell>{removeId(decodeSlug(collection.name))}</TableCell>
-              <TableCell className="flex gap-2">
-                {getUserData.data.superAdmin && (
-                  <>
-                    <Button asChild variant={"outline"}>
-                      <Link
-                        href={`/dashboard/table?collection=${generateSlug(
-                          collection.name
-                        )}&portalId=${portalId}&userId=${userId}`}
-                      >
-                        Update Table
-                      </Link>
-                    </Button>
-                    <DeleteCollection
-                      collectionName={collection.name}
-                      portalId={portalId}
-                    />
-                  </>
-                )}
+          {collectionList
+            .filter((collection) =>
+              removeId(decodeSlug(collection.name))
+                .toLowerCase()
+                .includes(search.toLowerCase())
+            )
+            .map((collection) => (
+              <TableRow key={collection.uuid}>
+                <TableCell>{removeId(decodeSlug(collection.name))}</TableCell>
+                <TableCell className="flex gap-2">
+                  {userData.superAdmin && (
+                    <>
+                      <Button asChild variant={"outline"}>
+                        <Link
+                          href={`/dashboard/table?collection=${generateSlug(
+                            collection.name
+                          )}&portalId=${portalId}&userId=${userId}`}
+                        >
+                          Update Table
+                        </Link>
+                      </Button>
+                      <DeleteCollection
+                        collectionName={collection.name}
+                        portalId={portalId}
+                      />
+                    </>
+                  )}
 
-                <Button asChild variant={"outline"}>
-                  <Link
-                    href={`/dashboard/createLineItem?portalId=${portalId}&dealId=${dealId}&collection=${generateSlug(
-                      collection.name
-                    )}&userId=${userId}`}
-                  >
-                    Create Line Item
-                  </Link>
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+                  <Button asChild variant={"outline"}>
+                    <Link
+                      href={`/dashboard/createLineItem?portalId=${portalId}&dealId=${dealId}&collection=${generateSlug(
+                        collection.name
+                      )}&userId=${userId}`}
+                    >
+                      Create Line Item
+                    </Link>
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>

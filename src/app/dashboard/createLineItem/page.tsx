@@ -82,6 +82,7 @@ const CreateLineItem = ({
       if (discount) {
         inputData.hs_discount_percentage = discount;
       }
+      console.log(inputData);
       const response = await axios.post(
         `/api/crm-card/createLineItem?portalId=${portalId}&dealId=${dealId}`,
         {
@@ -95,9 +96,9 @@ const CreateLineItem = ({
       }
       toast.success("Line Item created successfully");
       setLoading(false);
-      router.push(
-        `/dashboard?portalId=${portalId}&userId=${userId}&dealId=${dealId}`
-      );
+      // router.push(
+      //   `/dashboard?portalId=${portalId}&userId=${userId}&dealId=${dealId}`
+      // );
     } catch (error) {
       console.log(error);
     } finally {

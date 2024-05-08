@@ -18,8 +18,10 @@ export const POST = async (req: NextRequest) => {
     const newBody = {
       properties: validatedSchema.data,
     };
+    console.log(newBody);
 
     const accessToken = await getAccessTokenWithPortalId(Number(portalId));
+    console.log(accessToken);
 
     if (!accessToken) {
       return Response.json({ message: "Access Token Not Generated" });
