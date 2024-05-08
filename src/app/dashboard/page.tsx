@@ -17,10 +17,9 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { CollectionList, UserData } from "@/types";
-import axios from "axios";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { getUser } from "@/actions/user";
+import { createDeal, getUser } from "@/actions/user";
 import { Input } from "@/components/ui/input";
 
 interface DashboardPageProps {
@@ -137,6 +136,13 @@ const DashboardPage = ({
             ))}
         </TableBody>
       </Table>
+      {/* <Button
+        onClick={async () => {
+          const response = await createDeal(portalId);
+        }}
+      >
+        Create Deal
+      </Button> */}
     </div>
   );
 };

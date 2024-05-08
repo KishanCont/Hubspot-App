@@ -63,9 +63,9 @@ const CreateLineItem = ({
     if (productDataTable.length > 0) {
       const newData = productDataTable.filter(
         (item) =>
-          item.quantity == inputData.quantity ||
-          (item.term == inputData.hs_recurring_billing_period &&
-            item.billing_frequency == inputData.recurringbillingfrequency)
+          item.quantity == inputData.quantity &&
+          item.term == inputData.hs_recurring_billing_period &&
+          item.billing_frequency == inputData.recurringbillingfrequency
       );
       setFilteredData(newData);
       if (newData.length === 1) {
@@ -96,9 +96,9 @@ const CreateLineItem = ({
       }
       toast.success("Line Item created successfully");
       setLoading(false);
-      // router.push(
-      //   `/dashboard?portalId=${portalId}&userId=${userId}&dealId=${dealId}`
-      // );
+      router.push(
+        `/dashboard?portalId=${portalId}&userId=${userId}&dealId=${dealId}`
+      );
     } catch (error) {
       console.log(error);
     } finally {
@@ -114,7 +114,6 @@ const CreateLineItem = ({
         </h1>
       </div>
       <div className="space-y-5">
-        <ReadOnlyTable data={filteredData} />
         <LineItemForm
           inputData={inputData}
           setInputData={setInputData}
@@ -123,6 +122,7 @@ const CreateLineItem = ({
         <Button onClick={handleSubmit} disabled={loading}>
           Submit
         </Button>
+        <ReadOnlyTable data={filteredData} />
       </div>
     </div>
   );

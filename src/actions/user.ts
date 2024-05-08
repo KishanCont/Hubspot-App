@@ -16,3 +16,26 @@ export const getUser = async (portalId: string, userId: string) => {
 
   return response.data;
 };
+
+export const createDeal = async (portalId: string) => {
+  const accessToken = await getAccessTokenWithPortalId(Number(portalId));
+
+  const body = {
+    properties: {
+      dealname: "New deal",
+      pipeline: "default",
+      dealstage: "contractsent",
+      //   hubspot_owner_id: "64920891",
+    },
+  };
+  const response = await axios.post(
+    `https://api.hubapi.com/crm/v3/properties/deals`,
+    body,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  console.log(response.data);
+};

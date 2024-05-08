@@ -111,9 +111,9 @@ const EditPage = ({
     if (productDataTable.length > 0) {
       const newData = productDataTable.filter(
         (item) =>
-          item.quantity == inputData.quantity ||
-          (item.term == inputData.hs_recurring_billing_period &&
-            item.billing_frequency == inputData.recurringbillingfrequency)
+          item.quantity == inputData.quantity &&
+          item.term == inputData.hs_recurring_billing_period &&
+          item.billing_frequency == inputData.recurringbillingfrequency
       );
       setFilteredData(newData);
       if (newData.length === 1) {
