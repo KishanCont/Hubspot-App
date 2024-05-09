@@ -27,10 +27,10 @@ const BillingStartDate = ({ inputData, setInputData }: Props) => {
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
   const [startBillingTerm, setStartBillingTerm] = useState<string>("");
   const selectChange = (e: string) => {
-    if (e === "at payment") {
+    if (e === "at_payment") {
       setInputData({
         ...inputData,
-        hs_recurring_billing_start_date: "At Payment",
+        hs_recurring_billing_start_date: "",
         hs_billing_start_delay_type: "",
         hs_billing_start_delay_months: "",
         hs_billing_start_delay_days: "",
@@ -137,7 +137,7 @@ const BillingStartDate = ({ inputData, setInputData }: Props) => {
                 </Dialog>
               </SelectItem>
             ))}
-            <SelectItem value="">At Payment</SelectItem>
+            <SelectItem value="at_payment">At Payment</SelectItem>
           </SelectContent>
         </Select>
       </div>
