@@ -98,7 +98,7 @@ const BillingStartDate = ({ inputData, setInputData }: Props) => {
             <p>{`${inputData.hs_billing_start_delay_months} months after payment`}</p>
           ) : (
             <p>
-              {inputData.hs_recurring_billing_start_date === null
+              {inputData.hs_recurring_billing_start_date === ""
                 ? "At Payment"
                 : inputData.hs_recurring_billing_start_date}
             </p>

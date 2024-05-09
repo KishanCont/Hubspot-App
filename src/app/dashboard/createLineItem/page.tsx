@@ -52,6 +52,7 @@ const CreateLineItem = ({
     if (!response) {
       throw new Error("Product Collection Not Found");
     }
+
     setProductDataTable(response);
   };
 
@@ -82,12 +83,23 @@ const CreateLineItem = ({
       if (discount) {
         inputData.hs_discount_percentage = discount;
       }
-      console.log(inputData);
+      // console.log(inputData);
       const response = await axios.post(
         `/api/crm-card/createLineItem?portalId=${portalId}&dealId=${dealId}`,
         {
           ...inputData,
-          hs_recurring_billing_period: `P${inputData.hs_recurring_billing_period}M`,
+          hs_recurring_billing_period:
+            inputData.recurringbillingfrequency === "one-time"
+              ? ""
+              : `P${inputData.hs_recurring_billing_period}M`,
+          hs_recurring_billing_start_date:
+            inputData.hs_billing_start_delay_days === ""
+              ? ""
+              : inputData.hs_recurring_billing_start_date,
+          recurringbillingfrequency:
+            inputData.recurringbillingfrequency === "one-time"
+              ? ""
+              : inputData.recurringbillingfrequency,
         }
       );
 

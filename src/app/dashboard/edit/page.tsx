@@ -139,8 +139,8 @@ const EditPage = ({
               ? ""
               : `P${inputData.hs_recurring_billing_period}M`,
           hs_recurring_billing_start_date:
-            inputData.hs_billing_start_delay_days === "At Payment"
-              ? null
+            inputData.hs_billing_start_delay_days === ""
+              ? ""
               : inputData.hs_recurring_billing_start_date,
           recurringbillingfrequency:
             inputData.recurringbillingfrequency === "one-time"
@@ -151,7 +151,7 @@ const EditPage = ({
       if (!response.data) {
         throw new Error("Something went wrong");
       }
-      console.log(inputData);
+      // console.log(inputData);
       toast.success("Line Item updated successfully");
       window.location.reload();
       setLoading(false);
