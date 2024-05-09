@@ -137,7 +137,7 @@ const BillingStartDate = ({ inputData, setInputData }: Props) => {
                 </Dialog>
               </SelectItem>
             ))}
-            <SelectItem value="at payment">At Payment</SelectItem>
+            <SelectItem value="">At Payment</SelectItem>
           </SelectContent>
         </Select>
       </div>
