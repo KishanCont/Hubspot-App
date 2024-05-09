@@ -117,7 +117,9 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
               i.hs_recurring_billing_start_date ===
                 item.hs_recurring_billing_start_date &&
               i.term === item.term &&
-              i.billing_frequency === item.billing_frequency
+              i.billing_frequency === item.billing_frequency &&
+              i.quantity === item.quantity &&
+              i.discount === item.discount
           ) !== index;
         setIndexOfDuplicate(check ? index : -1);
         return check;
