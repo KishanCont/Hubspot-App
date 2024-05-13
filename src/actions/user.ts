@@ -13,7 +13,6 @@ export const getUser = async (portalId: string, userId: string) => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  console.log(accessToken);
 
   return response.data;
 };

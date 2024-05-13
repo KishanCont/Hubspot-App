@@ -25,10 +25,7 @@ const TablePage = async ({
   }
 
   return (
-    <div className="max-w-7xl m-auto space-y-8 ">
-      <h1 className="p-10 text-3xl font-bold text-primary underline ">
-        {removeId(decodeSlug(collection))}
-      </h1>
+    <div className="max-w-7xl mx-auto space-y-8 ">
       {collectionData && (
         <DataTable
           data={collectionData}

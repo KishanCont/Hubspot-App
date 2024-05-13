@@ -16,9 +16,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { BillingFrequency } from "@/constants";
-import { cn, validateTerm } from "@/lib/utils";
+import { cn, decodeSlug, removeId, validateTerm } from "@/lib/utils";
 import { CollectionDataType } from "@/types";
-import { Delete, Edit } from "lucide-react";
+import { ArrowLeft, Delete, Edit } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -159,11 +159,20 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
   }, []);
 
   return (
-    <div className="w-full  grid place-content-center gap-5">
-      <Button variant={"default"} className="w-fit " onClick={addNewRow}>
-        Add New Row
-      </Button>
-      <Table className="w-fit m-auto ">
+    <div className="w-full grid relative place-content-center gap-5">
+      <header className="sticky top-5  z-10 bg-white/80 backdrop-blur-sm p-5 rounded ">
+        <Button variant={"outline"} onClick={() => router.back()}>
+          <ArrowLeft className="text-primary" />
+        </Button>
+        <h1 className="my-5 text-3xl font-bold  text-primary underline ">
+          {removeId(decodeSlug(collection))}
+        </h1>
+        <Button variant={"default"} className="w-fit " onClick={addNewRow}>
+          Add New Row
+        </Button>
+      </header>
+
+      <Table className="w-full mx-auto mt-10 ">
         <TableHeader>
           <TableRow>
             <TableHead className="font-semibold">Billing Start Date</TableHead>

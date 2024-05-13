@@ -11,6 +11,12 @@ import {
 import { CollectionDataType } from "@/types";
 
 const ReadOnlyTable = ({ data }: { data: CollectionDataType[] }) => {
+  if (data.length === 0) {
+    <div>
+      <p>Kindly contact to Your admin</p>
+    </div>;
+  }
+
   return (
     <div className="min-h-80">
       <Table className="max-w-7xl mx-auto   ">

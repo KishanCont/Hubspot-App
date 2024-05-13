@@ -10,6 +10,8 @@ import { removeFirstAndLastLetter } from "@/lib/utils";
 import { LineItem } from "@/lib/validation";
 import { CollectionDataType } from "@/types";
 import axios from "axios";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -44,6 +46,7 @@ const EditPage = ({
   const [productDataTable, setProductDataTable] = useState<
     CollectionDataType[]
   >([]);
+  const router = useRouter();
   const [discount, setDiscount] = useState<string>("");
   const [filteredData, setFilteredData] = useState<CollectionDataType[]>([]);
 
@@ -168,6 +171,9 @@ const EditPage = ({
     </div>
   ) : (
     <div className="max-w-7xl mx-auto space-y-5 p-10">
+      <Button variant={"outline"} onClick={() => router.back()}>
+        <ArrowLeft className="text-primary" />
+      </Button>
       <LineItemForm
         // action="Edit"
         inputData={inputData}
@@ -177,7 +183,11 @@ const EditPage = ({
       <Button onClick={onSubmit} disabled={loading}>
         Submit
       </Button>
-      <ReadOnlyTable data={filteredData} />
+      {filteredData.length === 0 ? (
+        <p>Kindly Contact to Your administrator for discount.</p>
+      ) : (
+        <ReadOnlyTable data={filteredData} />
+      )}
     </div>
   );
 };

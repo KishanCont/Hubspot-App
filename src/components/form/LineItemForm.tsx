@@ -105,18 +105,16 @@ const LineItemForm = ({ inputData, setInputData, discount }: Props) => {
         </Select>
       </div>
       <div className="flex flex-col gap-2">
-        <Label htmlFor="discount">
-          {discount ? "Discount" : "Custom Discount"}
-        </Label>
+        <Label htmlFor="discount">Discount</Label>
         <Input
           type="text"
           placeholder={discount ? "Discount" : "Custom Discount"}
           id="discount"
           required
-          onChange={(e) =>
+          onChange={() =>
             setInputData({
               ...inputData,
-              hs_discount_percentage: discount ? discount : e.target.value,
+              hs_discount_percentage: discount ? discount : "0",
             })
           }
           value={discount ? discount : inputData.hs_discount_percentage!}

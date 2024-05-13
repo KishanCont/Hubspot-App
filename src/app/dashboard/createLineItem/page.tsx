@@ -8,6 +8,7 @@ import { decodeSlug, getId, removeId } from "@/lib/utils";
 import { LineItem } from "@/lib/validation";
 import { CollectionDataType } from "@/types";
 import axios from "axios";
+import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -69,6 +70,7 @@ const CreateLineItem = ({
           item.billing_frequency == inputData.recurringbillingfrequency
       );
       setFilteredData(newData);
+      console.log(newData.length);
       if (newData.length === 1) {
         setDiscount(newData[0].discount);
       } else {
@@ -119,8 +121,11 @@ const CreateLineItem = ({
   };
 
   return (
-    <div className=" max-w-7xl m-auto space-y-4">
+    <div className=" max-w-7xl m-auto space-y-4 mt-10">
       <div>
+        <Button variant={"outline"} onClick={() => router.back()}>
+          <ArrowLeft className="text-primary" />
+        </Button>
         <h1 className="text-3xl mt-6 font-bold text-primary underline ">
           {removeId(decodeSlug(collection))}
         </h1>
@@ -134,7 +139,11 @@ const CreateLineItem = ({
         <Button onClick={handleSubmit} disabled={loading}>
           Submit
         </Button>
-        <ReadOnlyTable data={filteredData} />
+        {filteredData.length === 0 ? (
+          <p>Kindly Contact to Your administrator for discount.</p>
+        ) : (
+          <ReadOnlyTable data={filteredData} />
+        )}
       </div>
     </div>
   );
