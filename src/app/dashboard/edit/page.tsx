@@ -144,7 +144,7 @@ const EditPage = ({
               ? ""
               : `P${inputData.hs_recurring_billing_period}M`,
           hs_recurring_billing_start_date:
-            inputData.hs_billing_start_delay_days === ""
+            inputData.hs_recurring_billing_start_date === ""
               ? ""
               : inputData.hs_recurring_billing_start_date,
           recurringbillingfrequency:
