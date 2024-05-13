@@ -76,7 +76,9 @@ const EditPage = ({
           ? response.hs_discount_percentage
           : "0",
         hs_recurring_billing_start_date:
-          response.hs_recurring_billing_start_date,
+          response.hs_recurring_billing_start_date
+            ? response.hs_recurring_billing_start_date
+            : "",
         recurringbillingfrequency:
           response.recurringbillingfrequency || "one-time",
         hs_billing_start_delay_days: response.hs_billing_start_delay_days,
