@@ -173,19 +173,22 @@ const EditPage = ({
     </div>
   ) : (
     <div className="max-w-7xl mx-auto space-y-5 p-10">
-      <Button variant={"outline"} onClick={() => router.back()}>
-        <ArrowLeft className="text-primary" />
-      </Button>
       <LineItemForm
         // action="Edit"
         inputData={inputData}
         setInputData={setInputData}
         discount={discount}
       />
-      <Button onClick={onSubmit} disabled={loading}>
+      <Button
+        onClick={onSubmit}
+        disabled={loading || filteredData.length === 0}
+      >
         Submit
       </Button>
-      {filteredData.length === 0 ? (
+      {filteredData.length === 0 &&
+      inputData.quantity &&
+      inputData.recurringbillingfrequency &&
+      inputData.hs_recurring_billing_period ? (
         <p>Kindly Contact to Your administrator for discount.</p>
       ) : (
         <ReadOnlyTable data={filteredData} />

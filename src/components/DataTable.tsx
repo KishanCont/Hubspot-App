@@ -162,7 +162,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
     <div className="w-full grid relative place-content-center gap-5">
       <header className="sticky top-5  z-10 bg-white/80 backdrop-blur-sm p-5 rounded ">
         <Button variant={"outline"} onClick={() => router.back()}>
-          <ArrowLeft className="text-primary" />
+          Back
         </Button>
         <h1 className="my-5 text-3xl font-bold  text-primary underline ">
           {removeId(decodeSlug(collection))}
