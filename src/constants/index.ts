@@ -25,11 +25,11 @@ export const BillingFrequency: {
     label: "Annually",
   },
   {
-    value: "bi-annually",
+    value: "per_six_months",
     label: "Bi-Annually",
   },
   {
-    value: "every two years",
+    value: "per_two_years",
     label: "Every 2 Years",
   },
   {
@@ -41,7 +41,7 @@ export const BillingFrequency: {
     label: "One Time",
   },
   {
-    value: "every three years",
+    value: "per_three_years",
     label: "Every 3 Years",
   },
   {
