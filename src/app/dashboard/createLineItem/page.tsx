@@ -95,7 +95,10 @@ const CreateLineItem = ({
               ? ""
               : `P${inputData.hs_recurring_billing_period}M`,
           hs_recurring_billing_start_date:
-            inputData.hs_recurring_billing_start_date === ""
+            inputData.hs_recurring_billing_start_date === "" &&
+            inputData.hs_billing_start_delay_days === "" &&
+            inputData.hs_billing_start_delay_months === "" &&
+            inputData.hs_billing_start_delay_type === ""
               ? ""
               : inputData.hs_recurring_billing_start_date,
           recurringbillingfrequency:

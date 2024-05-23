@@ -57,7 +57,7 @@ const BillingStartDate = ({ inputData, setInputData }: Props) => {
       setInputData({
         ...inputData,
         hs_recurring_billing_start_date: e.target.value,
-        hs_billing_start_delay_type: "",
+        hs_billing_start_delay_type: field,
         hs_billing_start_delay_months: "",
         hs_billing_start_delay_days: "",
       });
