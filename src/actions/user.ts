@@ -25,6 +25,7 @@ export const createDeal = async (portalId: string) => {
       dealname: "Installation deal",
       pipeline: "default",
       dealstage: "contractsent",
+      amount: "1500.00",
       //   hubspot_owner_id: "64920891",
     },
   };
