@@ -40,3 +40,28 @@ export const createDeal = async (portalId: string) => {
   );
   console.log(response.data);
 };
+
+export const updateDeal = async (
+  portalId: string,
+  amount: number,
+  dealId: string
+) => {
+  const accessToken = await getAccessTokenWithPortalId(Number(portalId));
+
+  const body = {
+    properties: {
+      amount: amount.toString(),
+      //   hubspot_owner_id: "64920891",
+    },
+  };
+  const response = await axios.patch(
+    `https://api.hubapi.com/crm/v3/objects/deals/${dealId}`,
+    body,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  console.log(response.data);
+};

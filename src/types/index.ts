@@ -39,6 +39,7 @@ export interface CollectionDataType {
 
 export interface LineItemsProperties extends WithId<Document> {
   name: string;
+  amount: string;
   quantity: string;
   hs_product_id: string;
   hs_object_id: string;

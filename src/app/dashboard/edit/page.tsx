@@ -25,9 +25,10 @@ const EditPage = ({
     name: string;
     dealId: string;
     collection: string;
+    userId: string;
   };
 }) => {
-  const { lineItemId, hsProductId, portalId, collection, dealId } =
+  const { lineItemId, hsProductId, portalId, collection, dealId, userId } =
     searchParams;
   const [inputData, setInputData] = useState<LineItem>({
     name: "",
@@ -161,7 +162,9 @@ const EditPage = ({
       }
       // console.log(inputData);
       toast.success("Line Item updated successfully");
-      window.location.reload();
+      router.push(
+        `/dashboard/updateAmount?portalId=${portalId}&dealId=${dealId}&userId=${userId}`
+      );
       setLoading(false);
     } catch (error: any) {
       console.log(error.message);

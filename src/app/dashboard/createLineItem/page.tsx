@@ -113,8 +113,11 @@ const CreateLineItem = ({
       }
       toast.success("Line Item created successfully");
       setLoading(false);
+      // router.push(
+      //   `/dashboard?portalId=${portalId}&userId=${userId}&dealId=${dealId}`
+      // );
       router.push(
-        `/dashboard?portalId=${portalId}&userId=${userId}&dealId=${dealId}`
+        `/dashboard/updateAmount?portalId=${portalId}&dealId=${dealId}&userId=${userId}`
       );
     } catch (error) {
       console.log(error);

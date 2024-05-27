@@ -67,7 +67,7 @@ export const GET = async (req: NextRequest) => {
               item.properties.hs_product_id
             }&portalId=${portalId}&dealId=${dealId}&collection=${generateSlug(
               item.properties.name
-            )}_${item.properties.hs_product_id}`,
+            )}_${item.properties.hs_product_id}&userId=${userId}`,
             label: "Edit",
           },
           {
