@@ -49,7 +49,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
 
   const addNewRow = () => {
     const newRow = {
-      hs_recurring_billing_start_date: "",
+      // hs_recurring_billing_start_date: "",
       term: "",
       billing_frequency: "",
       quantity: "",
@@ -97,7 +97,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
       setLoading(true);
       const isEmpty = collectionsData.some((item) => {
         return (
-          item.hs_recurring_billing_start_date === "" ||
+          // item.hs_recurring_billing_start_date === "" ||
           item.billing_frequency === "" ||
           item.discount === "" ||
           item.quantity === "" ||
@@ -114,8 +114,6 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
         const check =
           collectionsData.findIndex(
             (i) =>
-              i.hs_recurring_billing_start_date ===
-                item.hs_recurring_billing_start_date &&
               i.term === item.term &&
               i.billing_frequency === item.billing_frequency &&
               i.quantity === item.quantity &&
@@ -175,7 +173,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
       <Table className="w-full mx-auto mt-10 ">
         <TableHeader>
           <TableRow>
-            <TableHead className="font-semibold">Billing Start Date</TableHead>
+            {/* <TableHead className="font-semibold">Billing Start Date</TableHead> */}
             <TableHead className="font-semibold">Term(Months)</TableHead>
             <TableHead className="font-semibold">Billing Frequency</TableHead>
             <TableHead className="font-semibold">Quantity</TableHead>
@@ -188,7 +186,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
             const redClass = indexOfDuplicate === index ? "border-red-500" : "";
             return (
               <TableRow key={index}>
-                <TableCell>
+                {/* <TableCell>
                   <Input
                     type="date"
                     value={collection.hs_recurring_billing_start_date}
@@ -197,7 +195,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
                     }
                     className={cn(redClass)}
                   />
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
                   <Input
                     type="text"
