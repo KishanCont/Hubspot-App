@@ -19,6 +19,7 @@ export const GET = async (req: NextRequest) => {
 
     const accessToken = await getAccessTokenWithPortalId(Number(portalId));
 
+
     if (!accessToken) {
       return NextResponse.json({
         message: "Access Token Not Generated",

@@ -1,9 +1,8 @@
 "use server";
 
-import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } from "@/constants/";
+import { CLIENT_ID, CLIENT_SECRET, DOMAIN, REDIRECT_URI } from "@/constants/";
 
 import axios from "axios";
-import colors from "colors/safe";
 import { createMongoConnection } from "./dbConnetion";
 import { Db, MongoClient, WithId } from "mongodb";
 import { AxiosResponse } from "axios";
@@ -41,6 +40,8 @@ export async function getAccessTokenWithPortalId(portalId: Number) {
         throw new Error("No Refresh Token Found");
       }
 
+      console.log(data);
+
       const accessToken = await getAccessTokenWithRefreshToken(data.refresh);
 
       if (!accessToken) {
@@ -50,10 +51,11 @@ export async function getAccessTokenWithPortalId(portalId: Number) {
       cacheAccessToken = accessToken;
 
       dbClient?.close();
-      return accessToken;
+      console.log(cacheAccessToken);
+      return cacheAccessToken;
     } catch (error: any) {
       console.error({
-        error: colors.red(error.message),
+        error: error.message,
       });
     }
   }
@@ -68,8 +70,10 @@ export async function getAccessTokenWithRefreshToken(refreshToken: string) {
       params.append("grant_type", "refresh_token");
       params.append("client_id", CLIENT_ID);
       params.append("client_secret", CLIENT_SECRET);
-      params.append("redirect_uri", REDIRECT_URI);
+      params.append("redirect_uri", DOMAIN!);
       params.append("refresh_token", refreshToken);
+
+      console.log({ params });
 
       const response: AccessToken = await axios({
         method: "POST",
@@ -86,13 +90,13 @@ export async function getAccessTokenWithRefreshToken(refreshToken: string) {
 
       cacheAccessToken = response.data.access_token;
 
-      return response.data.access_token;
+      return cacheAccessToken;
     } catch (error: any) {
       console.error({
-        error: colors.red(error.message),
+        error: error.message,
       });
     }
+  } else {
+    return cacheAccessToken;
   }
-
-  return cacheAccessToken;
 }
